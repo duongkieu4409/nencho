@@ -1,0 +1,18 @@
+{
+  "name": "Hướng dẫn 年末調整 2026",
+  "short_name": "年末調整",
+  "description": "Hướng dẫn người Việt tại Nhật tự điền giấy 年末調整 năm 2026 (令和8年分), từng ô trên mẫu thật của 国税庁.",
+  "lang": "vi",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#F4F6F9",
+  "theme_color": "#1D4ED8",
+  "categories": ["finance", "productivity", "utilities"],
+  "icons": [
+    {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png"},
+    {"src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
