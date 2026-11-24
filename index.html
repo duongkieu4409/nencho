@@ -71,7 +71,7 @@ header.top{display:flex;align-items:center;gap:10px;margin:4px 0 14px}
 .pill{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 12px;border-radius:999px;font-size:13px;font-weight:700;background:var(--surface);box-shadow:0 0 0 1px var(--line);color:var(--ink-2)}
 .acct{width:40px;height:40px;border-radius:12px;border:0;background:var(--surface);box-shadow:0 0 0 1px var(--line);display:grid;place-items:center;color:var(--ink-2)}
 .acct-pop{position:absolute;right:0;top:48px;z-index:40;width:260px;padding:14px;border-radius:var(--r-md);background:var(--surface);box-shadow:0 0 0 1px var(--line),var(--sh-2);font-size:14.5px;color:var(--ink-2)}
-.install{border:0;cursor:pointer;background:var(--primary);color:var(--primary-ink);box-shadow:none}
+.install{white-space:nowrap;flex:none;border:0;cursor:pointer;background:var(--primary);color:var(--primary-ink);box-shadow:none}
 .acct-pop b{display:block;color:var(--ink);font-size:15.5px;margin-bottom:4px}
 /* Cards & text */
 .card{background:var(--surface);border-radius:var(--r-lg);padding:20px 18px;box-shadow:var(--sh-1),0 0 0 1px var(--line);margin-bottom:14px}
@@ -246,7 +246,7 @@ footer a{color:inherit}
   .sum-group{display:none!important}
 }
 @media (max-width:899px){.hide-sm{display:none}}
-@media (max-width:480px){.flabel{display:none}.brand small{display:none}.top .pill.yr{display:none}.pk-thumb{width:84px;height:64px}.pk{gap:12px}h1{font-size:24px}}
+@media (max-width:480px){.brand{font-size:15px;gap:8px}.install{padding:0 10px}.flabel{display:none}.brand small{display:none}.top .pill.yr{display:none}.pk-thumb{width:84px;height:64px}.pk{gap:12px}h1{font-size:24px}}
 
 </style>
 </head>

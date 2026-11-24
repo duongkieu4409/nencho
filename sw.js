@@ -1,5 +1,5 @@
 /* Service worker: lưu app vào máy để mở được khi không có mạng. Đổi VERSION mỗi lần cập nhật app. */
-const VERSION = 'nencho-2026-v1';
+const VERSION = 'nencho-2026-v2';
 const CORE = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png', './icons/apple-touch-icon.png', './icons/favicon-32.png'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(VERSION).then(c => c.addAll(CORE)).then(() => self.skipWaiting()));
