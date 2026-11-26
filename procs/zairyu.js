@@ -63,7 +63,7 @@ const order = f => (f.form === Z ? 2 : 1);
 fields.sort((x, y) => order(x) - order(y));
 
 window.PROC = {
-  id:'zairyu', kicker:'Lưu trú', title:'Gia hạn / đổi tư cách lưu trú', jp:'在留期間更新許可申請・在留資格変更許可申請（技術・人文知識・国際業務）',
+  id:'zairyu', short:'Gia hạn / đổi tư cách', jpShort:'在留期間更新・在留資格変更', fillDesc:'Điền đơn 申請人等作成用１・２ từng ô rồi in ra.', kicker:'Lưu trú', title:'Gia hạn / đổi tư cách lưu trú', jp:'在留期間更新許可申請・在留資格変更許可申請（技術・人文知識・国際業務）',
   intro:'Hỏi vài câu để biết bạn cần giấy gì, nộp ở đâu, phí bao nhiêu; rồi hướng dẫn viết từng ô trên đơn chính thức.',
   formName:'đơn xin', defaults:{kind:'koshin', cat:'3', jobChange:'no', haken:'no', nat:'ベトナム'},
   forms:{
@@ -114,7 +114,16 @@ window.PROC = {
     const docs = [{t:'Giấy tờ bạn tự chuẩn bị', items:me}, {t:'Giấy tờ công ty chuẩn bị', d:'Danh sách theo bảng kê chính thức (提出書類一覧). Công ty có thể đã quen làm — hãy đưa danh sách này cho phòng nhân sự.', items:co}];
     const warns = ['Giấy tờ do cơ quan Nhật cấp phải trong vòng 3 tháng tính đến ngày nộp. Giấy tờ tiếng nước ngoài phải kèm bản dịch tiếng Nhật.'];
     if (cat34 && !H && a.jobChange === 'yes') warns.push('Lần gia hạn đầu tiên sau khi chuyển sang công ty loại 3/4: phải nộp thêm giấy tờ về công ty mới (đã liệt kê ở trên).');
-    return {facts, steps, docs, warns};
+    const head = {title: H ? 'Đổi tư cách lưu trú sang 技術・人文知識・国際業務' : 'Gia hạn visa 技術・人文知識・国際業務',
+      summary: `Theo câu trả lời: công ty loại ${cat}${!H && a.jobChange === 'yes' ? ', đã chuyển việc sau lần xét trước' : ''}${a.haken === 'yes' ? ', làm theo dạng phái cử' : ''}.`};
+    const quad = [
+      {k:'Nơi nộp', v:'地方出入国在留管理官署 nơi bạn ở, hoặc nộp online', note:'Ngày thường 9:00–12:00, 13:00–16:00'},
+      {k:'Người nộp', v:'Bạn (hoặc nhân viên công ty / 行政書士 được ủy quyền)'},
+      {k:'Thời gian xét', v: H ? 'Khoảng 1–2 tháng' : 'Khoảng 2 tuần – 1 tháng', note: H ? 'Nộp trước khi bắt đầu công việc mới.' : 'Nộp từ 3 tháng trước ngày hết hạn.'},
+      {k:'Lệ phí', v:'Tính theo thời hạn được cấp: 1 năm 33.000円 · 3 năm 64.000円 · 5 năm 75.000円', note:'Từ 1/10/2026. Đầy đủ: ' + FEE},
+    ];
+    const notes = [facts[0].v + ' ' + (facts[0].note || ''), 'Nếu chưa có kết quả khi hết hạn: ' + facts[3].v, 'Hỏi đáp: 外国人在留総合インフォメーションセンター 0570-013904.'];
+    return {head, quad, notes, steps, docs, warns};
   },
   fields,
   sources:[

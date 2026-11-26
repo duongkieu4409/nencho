@@ -69,37 +69,52 @@ function qBlock(q){
 }
 
 /* ---------- Khung trang ---------- */
-function shell(inner){
-  const tabs = [['guide','Xem hướng dẫn'],['fill','Nhập dữ liệu'],['done','Tổng quan & in']];
-  const hero = st.tab === 'guide' ? `<div class="card hero-card"><div class="eyebrow">${esc(P.kicker || 'Thủ tục')}</div><h1>${esc(P.title)}</h1>
-    <p class="lead">${esc(P.intro)}</p><p class="small jp">${esc(P.jp || '')}</p></div>` : `<div class="mini-hero"><b>${esc(P.title)}</b><span class="jp">${esc(P.jp || '')}</span></div>`;
-  return hero + `<div class="tabbar no-print" role="tablist">${tabs.map(([k, l], i) => `<button type="button" role="tab" class="tab${st.tab === k ? ' on' : ''}" data-tab="${k}" aria-selected="${st.tab === k}"><span>${i + 1}</span>${l}</button>`).join('')}</div>${inner}`;
+function modeBtns(){
+  const m = st.tab === 'guide' ? 'guide' : 'fill';
+  return `<div class="mode no-print" role="tablist"><button type="button" role="tab" data-tab="guide" class="${m === 'guide' ? 'on' : ''}" aria-selected="${m === 'guide'}"><span class="n">1</span><span><b>Xem hướng dẫn</b><span class="s">Cần chuẩn bị gì, nộp ở đâu, theo thứ tự nào.</span></span></button>
+    <button type="button" role="tab" data-tab="fill" class="${m === 'fill' ? 'on' : ''}" aria-selected="${m === 'fill'}" ${P.fields.length ? '' : 'disabled'}><span class="n">2</span><span><b>Nhập dữ liệu và in</b><span class="s">${esc(P.fillDesc || ('Điền ' + (P.formName || 'tờ khai') + ' từng ô rồi in ra.'))}</span></span></button></div>`;
 }
+function shell(inner){
+  if (st.tab === 'fill') return inner;
+  if (st.tab === 'done') return `<div class="mini-hero"><b>${esc(P.title)}</b><span class="jp">${esc(P.jp || '')}</span></div>${modeBtns()}<div style="height:14px"></div>${inner}`;
+  return inner;
+}
+function setNav(on){ $('#nav').hidden = !on; document.body.classList.toggle('has-nav', !!on); }
 
 /* ---------- 1. Xem hướng dẫn ---------- */
 function renderGuide(){
   hid = 0;
   const a = st.a, c = calc();
   const qs = (P.questions || []).filter(shown);
-  const g = P.guide(a, c);
-  let h = '';
-  if (qs.length) h += `<section class="card"><div class="sec-title"><span class="sec-num">${icon('list', 18)}</span><h2>Trường hợp của bạn</h2></div>${qs.map(qBlock).join('')}</section>`;
-  if (g.stop) h += `<div class="stopbox">${g.stop}</div>`;
-  if (g.facts && g.facts.length) h += `<section class="facts">${g.facts.map(f => `<div class="fact"><span class="fact-ic">${icon(f.icon || 'info', 18)}</span><div><b>${esc(f.k)}</b><span>${f.v}</span>${f.note ? `<small>${f.note}</small>` : ''}</div></div>`).join('')}</section>`;
-  if (g.steps && g.steps.length) h += `<section class="card"><h2>Các bước làm</h2><ol class="tl">${g.steps.map(s => `<li><b>${esc(s.t)}</b>${s.d ? `<span>${s.d}</span>` : ''}</li>`).join('')}</ol></section>`;
+  const g = P.guide(a, c) || {};
+  const head = g.head || {};
+  let h = `<section class="card case-card"><span class="eyebrow">${esc(P.kicker || 'Thủ tục')} · <span class="jp">${esc(P.jpShort || P.jp || '')}</span></span>
+    <h1>${esc(head.title || P.title)}</h1><p class="lead">${head.summary || esc(P.intro)}</p>${modeBtns()}`;
+  if (g.quad && g.quad.length) h += `<div class="quad">${g.quad.map(q => `<div class="qd"><small>${esc(q.k)}</small><b>${q.v}</b>${q.note ? `<em>${q.note}</em>` : ''}</div>`).join('')}</div>`;
+  h += `</section>`;
+  let left = '', right = '';
+  if (qs.length) left += `<section class="card"><h2>Trường hợp của bạn</h2><p class="small">Trả lời để app chọn đúng giấy tờ và hướng làm.</p>${qs.map(qBlock).join('')}</section>`;
+  if (g.stop) left += `<section class="card"><div class="stopbox">${g.stop}</div></section>`;
+  if (g.steps && g.steps.length){
+    left += `<section class="card"><h2>Các bước</h2><ol class="steps2">${g.steps.map(x => `<li><b>${esc(x.t)}</b>${x.d ? `<span>${x.d}</span>` : ''}</li>`).join('')}</ol>`;
+    (g.notes || []).forEach(n => { left += `<div class="warn2">${n}</div>`; });
+    (g.warns || []).forEach(w => { left += `<div class="warn2">⚠ ${w}</div>`; });
+    left += `</section>`;
+  }
+  if (P.sources) left += `<section class="card src"><h2>Nguồn chính thức</h2><ul>${P.sources.map(x => `<li>${icon('link', 14)} <a href="${x.u}" target="_blank" rel="noopener">${esc(x.t)}</a>${x.d ? ` <span class="small">${esc(x.d)}</span>` : ''}</li>`).join('')}</ul></section>`;
   (g.docs || []).forEach((grp, gi) => {
-    h += `<section class="card"><h2>${esc(grp.t)}</h2>${grp.d ? `<p class="small">${grp.d}</p>` : ''}<ul class="cl">${grp.items.map((it, ii) => {
+    right += `<section class="card"><h2>${esc(grp.t)}</h2>${grp.d ? `<p class="small">${grp.d}</p>` : ''}${grp.items.map((it, ii) => {
       const k = `ck-${gi}-${ii}`, on = !!(st.ck || {})[k];
-      return `<li class="${on ? 'done' : ''}"><button type="button" class="ckb" data-ck="${k}" aria-pressed="${on}" aria-label="Đánh dấu đã chuẩn bị">${on ? icon('check', 16) : ''}</button>
-        <div><b>${it.jp ? `<span class="jp">${esc(it.jp)}</span> · ` : ''}${esc(it.t)}</b>${it.d ? `<span>${it.d}</span>` : ''}${it.where ? `<small>${icon('map', 14)} ${it.where}</small>` : ''}${it.warn ? `<em>${icon('alert', 14)} ${it.warn}</em>` : ''}</div></li>`;
-    }).join('')}</ul></section>`;
+      return `<div class="doc2${on ? ' done' : ''}"><button type="button" class="ckb" data-ck="${k}" aria-pressed="${on}" aria-label="Đánh dấu đã chuẩn bị">${on ? icon('check', 14) : ''}</button>
+        <div>${it.jp && it.jp !== '—' ? `<b class="jp">${esc(it.jp)}</b><br>` : ''}${esc(it.t)}${it.d ? `<small>${it.d}</small>` : ''}${it.where ? `<small>${icon('map', 12)} ${it.where}</small>` : ''}${it.warn ? `<em>⚠ ${it.warn}</em>` : ''}</div></div>`;
+    }).join('')}</section>`;
   });
-  if (g.warns && g.warns.length) h += g.warns.map(w => `<div class="warnbox">${icon('alert')}<span>${w}</span></div>`).join('');
-  if (P.sources) h += `<section class="card src"><h2>Nguồn chính thức</h2><ul>${P.sources.map(s => `<li>${icon('link', 14)} <a href="${s.u}" target="_blank" rel="noopener">${esc(s.t)}</a>${s.d ? ` <span class="small">${esc(s.d)}</span>` : ''}</li>`).join('')}</ul></section>`;
-  if (P.fields.length) h += `<div class="glinks no-print"><button type="button" class="btn btn-pri btn-wide" data-tab="fill">${icon('pen')} Bắt đầu điền ${esc(P.formName || 'tờ khai')}</button></div>`;
+  right += `<section class="card side-act no-print">${fields().length ? `<button type="button" class="btn btn-pri" data-tab="fill">Bắt đầu điền giấy ${icon('right')}</button>` : `<p class="small">${esc(P.emptyFill || '')}</p>`}<button type="button" class="btn btn-sec" id="printList">${icon('print')} In danh sách này</button></section>`;
+  if (!g.docs || !g.docs.length) right = right;
+  h += `<div class="cols"><div>${left}</div><div>${right}</div></div>`;
   $('#app').innerHTML = shell(h);
-  $('#nav').hidden = true;
-  document.body.classList.remove('wide');
+  setNav(false);
+  document.body.classList.add('wide');
 }
 
 /* ---------- Ảnh mẫu + ô tô sáng ---------- */
@@ -139,19 +154,19 @@ function paper(text){
     const m = l.match(/^(.{1,24}?)[　]+(.+)$/);
     return m ? `<div class="row"><span>${esc(m[1])}</span><b>${esc(m[2])}</b></div>` : `<div class="row only"><b>${esc(l)}</b></div>`;
   }).join('');
-  return `<div class="write"><div class="wl">${icon('pen', 13)} Phần bạn viết vào giấy</div>${rows || '<div class="row only"><b class="muted">（chưa nhập）</b></div>'}</div>`;
+  return `<div class="lab2">Phần bạn điền vào giấy</div><div class="write">${rows || '<div class="row only"><b class="muted">（chưa nhập）</b></div>'}</div>`;
 }
 const outText = (fd, a, c) => fd.out ? fd.out(a, c) : (fd.type === 'date' ? ymd(a[fd.id]) : fd.type === 'money' ? (a[fd.id] !== undefined && a[fd.id] !== '' ? comma(num(a[fd.id])) : '') : (fd.type === 'choice' ? ((fd.opts.find(o => o[0] === a[fd.id]) || [])[2] || (fd.opts.find(o => o[0] === a[fd.id]) || [])[1] || '') : (a[fd.id] || '')));
 function renderFill(){
   hid = 0;
   const F = fields();
-  if (!F.length){ $('#app').innerHTML = shell(`<section class="card"><p class="lead">${esc(P.emptyFill || 'Thủ tục này chưa có phần nhập dữ liệu.')}</p><button type="button" class="btn btn-sec" data-tab="guide">Xem hướng dẫn</button></section>`); $('#nav').hidden = true; return; }
+  if (!F.length){ $('#app').innerHTML = shell(`<section class="card"><p class="lead">${esc(P.emptyFill || 'Thủ tục này chưa có phần nhập dữ liệu.')}</p><button type="button" class="btn btn-sec" data-tab="guide">Xem hướng dẫn</button></section>`); setNav(false); return; }
   if (st.idx >= F.length) st.idx = F.length - 1; if (st.idx < 0) st.idx = 0;
   const fd = F[st.idx], a = st.a, c = calc(), fm = P.forms[fd.form];
   const same = F.filter(x => x.form === fd.form), pos = same.indexOf(fd) + 1;
   const r = fd.area;
-  let h = `<div class="gtop no-print"><button type="button" class="iconbtn" data-tab="done" aria-label="Tổng quan">${icon('list')}</button>
-    <div class="prog"><div class="prog-row"><span>${esc(fm.short)} · ${pos}/${same.length}</span><b>${st.idx + 1} / ${F.length}</b></div><div class="bar"><i style="transform:scaleX(${(st.idx + 1) / F.length})"></i></div></div></div>
+  let h = `<div class="gtop no-print"><button type="button" class="iconbtn" data-tab="guide" aria-label="Về phần hướng dẫn">${icon('left')}</button>
+    <div class="prog"><div class="prog-row"><span>${esc(P.short || P.title)} · Nhập dữ liệu · ${esc(fm.short)}</span><b>${st.idx + 1} / ${F.length}</b></div><div class="bar"><i style="transform:scaleX(${(st.idx + 1) / F.length})"></i></div></div></div>
     <div class="glayout"><section class="card fpanel no-print" aria-label="Vị trí trên tờ giấy">
       <div class="fview" id="fview" data-hx="${r ? r[0] + r[2] / 2 : ''}" data-hy="${r ? r[1] + r[3] / 2 : ''}" data-hw="${r ? r[2] : ''}">${formSvg(fd.form, {hl: r})}</div>
       <span class="flabel">Ô cần viết ở bước này</span>
@@ -161,8 +176,8 @@ function renderFill(){
       <div class="st"><span class="n">${st.idx + 1}</span><span class="tt">${esc(fd.jpLabel)}<small>${esc(fd.viLabel)}</small></span></div>
       <p class="vi">${fd.vi}</p>`;
   if (fd.jp || fd.badgeWarn) h += `<div class="badges">${fd.jp ? '<span class="b-jp">文 Viết bằng tiếng Nhật</span>' : ''}${fd.badgeWarn ? `<span class="b-opt">${icon('alert', 14)} Cần xác nhận</span>` : ''}</div>`;
-  if (!fd.noInput) h += `<div class="field no-print"><label class="sub-label" for="in-${fd.id}">${esc(fd.q || 'Nhập thông tin của bạn')}</label>${control(fd)}${fd.hint ? `<p class="hint">${esc(fd.hint)}</p>` : ''}</div>`;
   h += `<div id="paperBox">${paper(outText(fd, a, c))}</div>`;
+  if (!fd.noInput) h += `<div class="field inbox no-print"><div class="lab2">Ô nhập của bạn</div><label class="sub-label" for="in-${fd.id}" style="margin-top:0">${esc(fd.q || 'Nhập thông tin của bạn')}</label>${control(fd)}${fd.hint ? `<p class="hint">${esc(fd.hint)}</p>` : ''}</div>`;
   const warn = typeof fd.warn === 'function' ? fd.warn(a, c) : fd.warn;
   const note = typeof fd.note === 'function' ? fd.note(a, c) : fd.note;
   if (warn) h += `<div class="warnbox">${icon('alert')}<span>${warn}</span></div>`;
@@ -171,7 +186,7 @@ function renderFill(){
   $('#app').innerHTML = shell(h);
   $('#navIn').innerHTML = `<button type="button" class="btn btn-sec btn-back" id="prev" ${st.idx === 0 ? 'disabled' : ''} aria-label="Quay lại">${icon('left')}<span class="hide-sm">Quay lại</span></button>
     <button type="button" class="btn btn-pri" id="next">${st.idx === F.length - 1 ? `${icon('check')} Xem tổng quan` : `Tiếp theo ${icon('right')}`}</button>`;
-  $('#nav').hidden = false;
+  setNav(true);
   document.body.classList.add('wide');
   requestAnimationFrame(applyZoom); setTimeout(applyZoom, 60);
 }
@@ -200,7 +215,7 @@ function renderDone(){
   h += `<section class="card sum-group"><h2>Danh sách từng mục</h2>${F.map((fd, i) => `<button type="button" class="sum-item" data-goto="${i}"><span class="n">${i + 1}</span><span><span class="tt">${esc(fd.jpLabel)}</span><span class="vv">${esc(outText(fd, a, c) || '（chưa nhập）')}</span></span><span class="go">Sửa ${icon('right', 16)}</span></button>`).join('')}</section>
     <div class="card actions no-print"><button type="button" class="btn btn-sec" data-tab="guide">Xem lại hướng dẫn</button><button type="button" class="btn btn-ghost" id="reset">Xoá dữ liệu thủ tục này</button></div>`;
   $('#app').innerHTML = shell(h);
-  $('#nav').hidden = true;
+  setNav(false);
   document.body.classList.add('wide');
 }
 
@@ -246,6 +261,7 @@ document.addEventListener('click', e => {
     case 'zOut': return zoomBy(1 / 1.35);
     case 'zFit': zoom = null; return applyZoom();
     case 'zFull': { const fd = fields()[st.idx]; return openLB(fd.form, fd.area); }
+    case 'printList': { try { print(); } catch(_){} return; }
     case 'print': { const n = $('#printNote'); try { print(); } catch(_){} setTimeout(() => { if (n) n.hidden = false; }, 800); return; }
     case 'reset': {
       if (t.dataset.armed !== '1'){ t.dataset.armed = '1'; t.textContent = 'Bấm lần nữa để xoá'; setTimeout(() => { if (t.isConnected){ t.dataset.armed = ''; t.textContent = 'Xoá dữ liệu thủ tục này'; } }, 4000); return; }

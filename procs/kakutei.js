@@ -84,7 +84,7 @@ const fields = [
 /* chữ điền: số tiền vào ô giá trị (trái x 192–292, phải x 471–572) */
 fields.forEach(f => { if (f.fillArea || !f.area) return; if (f.area[0] === 42) f.fillArea = [192, f.area[1], 100, f.area[3]]; else if (f.area[0] === 316) f.fillArea = [471, f.area[1], 101, f.area[3]]; });
 window.PROC = {
-  id:'kakutei', kicker:'Thuế', title:'Tự khai thuế 確定申告 (năm 2026)', jp:'令和8年分 所得税及び復興特別所得税の確定申告書（第一表）',
+  id:'kakutei', short:'確定申告', jpShort:'確定申告 令和8年分', fillDesc:'Điền 申告書 第一表 từng ô, app tính sẵn số tiền rồi in ra.', kicker:'Thuế', title:'Tự khai thuế 確定申告 (năm 2026)', jp:'令和8年分 所得税及び復興特別所得税の確定申告書（第一表）',
   intro:'Cho người làm công: làm thêm, nghỉ việc giữa năm, chi phí y tế cao, quyên góp ふるさと納税, năm đầu vay mua nhà, người phụ thuộc ở Việt Nam chưa khai… App tính sẵn các dòng trên 第一表.',
   formName:'申告書 第一表', defaults:{qSide:'no', qQuit:'no', qIryo:'no', qKifu:'no', qHouse:'no', qVn:'no', married:'no', sideOther:'no'},
   forms:{d1:{title:'令和8年分 所得税及び復興特別所得税の確定申告書 第一表', short:'申告書 第一表', src:'forms/kakutei-1.jpg', w:595.2, h:842, note:'Bản dự thảo (案) 国税庁 công bố 1/7/2026 — bản chính thức dùng từ 1/2027, có thể thay đổi'}},
@@ -135,7 +135,16 @@ window.PROC = {
     const warns = ['Mẫu 第一表 trong app là bản dự thảo (案) 国税庁 công bố 1/7/2026; bản chính thức dùng từ 1/2027 có thể thay đổi vị trí ô.'];
     if (a.sideOther === 'yes') warns.push('Có thu nhập kinh doanh/freelance: cần thêm 収支内訳書 hoặc 青色申告決算書 và cách tính khác. Nên dùng 「確定申告書等作成コーナー」 hoặc hỏi 税務署.');
     if (a.qHouse === 'yes') warns.push('Số tiền khấu trừ vay nhà (ô ㉟) phải tính trên 「住宅借入金等特別控除額の計算明細書」. App không tự tính số này.');
-    return {facts, steps, docs:[{t:'Giấy tờ cần chuẩn bị', items}], warns};
+    const why = [a.qQuit === 'yes' && 'nghỉ việc giữa năm', a.qSide === 'yes' && 'có lương làm thêm', a.qIryo === 'yes' && 'chi phí y tế cao', a.qKifu === 'yes' && 'quyên góp ふるさと納税', a.qHouse === 'yes' && 'năm đầu vay mua nhà', a.qVn === 'yes' && 'người phụ thuộc ở Việt Nam'].filter(Boolean);
+    const head = {title: c.inc ? (c.refund ? `Khai thuế để được hoàn khoảng ${PU.yen(c.refund)}` : c.pay ? `Khai thuế: phải nộp thêm khoảng ${PU.yen(c.pay)}` : 'Tự khai thuế năm 2026') : 'Tự khai thuế năm 2026 (確定申告)',
+      summary: why.length ? 'Theo câu trả lời: ' + why.join(', ') + '.' : 'Trả lời các câu bên dưới để app biết bạn cần khai những gì.'};
+    const quad = [
+      {k:'Nơi nộp', v:'税務署 nơi bạn ở, hoặc online (e-Tax / 作成コーナー)'},
+      {k:'Người nộp', v:'Bạn'},
+      {k:'Thời hạn', v:'16/2 – 15/3/2027', note:'Chỉ xin hoàn thuế: nộp được từ 1/1/2027. Cần xác nhận lịch chính thức.'},
+      {k:'Lệ phí', v:'Không mất phí'},
+    ];
+    return {head, quad, steps, docs:[{t:'Giấy tờ cần chuẩn bị', items}], warns};
   },
   summary(a, c){
     if (!c.inc) return '';

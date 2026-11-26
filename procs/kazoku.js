@@ -51,7 +51,7 @@ const fields = [
   {form:f1, id:'photo', noInput:true, optional:true, jpLabel:'写真', viLabel:'Ảnh 4×3 cm của người sang', vi:'Ảnh dọc 4 cm × ngang 3 cm, chụp trong 6 tháng, chính diện, không mũ, nền trơn. Ghi tên ở mặt sau rồi dán vào đơn.', area:[457,41,87,113], out:() => ''},
 ];
 window.PROC = {
-  id:'kazoku', kicker:'Lưu trú · gia đình', title:'Đón vợ/chồng, con sang Nhật (visa gia đình)', jp:'在留資格認定証明書交付申請（家族滞在）',
+  id:'kazoku', short:'Visa gia đình', jpShort:'家族滞在', fillDesc:'Điền đơn xin COE 3 trang từng ô rồi in ra.', kicker:'Visa gia đình', title:'Đón vợ/chồng, con sang Nhật (visa gia đình)', jp:'在留資格認定証明書交付申請（家族滞在）',
   intro:'Bạn ở Nhật làm hồ sơ xin “Giấy chứng nhận tư cách lưu trú” (COE) cho vợ/chồng hoặc con. Có COE rồi, gia đình xin visa tại Việt Nam và sang Nhật.',
   formName:'đơn xin COE', defaults:{who:'spouse', supWork:'work', nat:'ベトナム', supNat:'ベトナム'},
   forms:{
@@ -91,7 +91,15 @@ window.PROC = {
     else me.push(
       {jp:'在職証明書', t:'Giấy chứng nhận đang làm việc', d:'Hoặc bản sao giấy phép kinh doanh nếu bạn tự kinh doanh.', where:'Công ty của bạn'},
       {jp:'住民税の課税（又は非課税）証明書・納税証明書', t:'Giấy thuế cư trú 1 năm', d:'Loại ghi tổng thu nhập 1 năm và tình trạng nộp thuế (có cả 2 nội dung thì 1 tờ là đủ).', where:'区役所・市役所 nơi bạn ở ngày 1/1, hoặc máy コンビニ bằng thẻ My Number'});
-    return {facts, steps, docs:[{t:'Giấy tờ cần nộp (theo bảng kê chính thức)', items:me}],
+    const who = {spouse:'vợ/chồng', child:'con', both:'vợ/chồng và con'}[a.who] || 'gia đình';
+    const head = {title:`Đón ${who} sang Nhật sống cùng`, summary:`Theo câu trả lời: bạn ở Nhật ${a.supWork === 'other' ? 'không đi làm có lương (du học…)' : 'đang đi làm có lương'}, xin giấy chứng nhận tư cách lưu trú (COE) 「家族滞在」 cho ${who}.`};
+    const quad = [
+      {k:'Nơi nộp', v:'地方出入国在留管理官署 quản lý nơi gia đình sẽ ở', note:'Không nhận nộp qua bưu điện.'},
+      {k:'Người nộp', v:'Bạn — người bảo lãnh ở Nhật (代理人)'},
+      {k:'Thời gian xét', v:'Khoảng 1–3 tháng', note:'Sau đó gia đình xin visa tại Việt Nam.'},
+      {k:'Lệ phí', v:'Xin COE không mất phí', note:'Phí visa tại Việt Nam tính riêng.'},
+    ];
+    return {head, quad, notes:[facts[2].note], steps, docs:[{t:'Giấy tờ cần chuẩn bị', items:me}],
       warns:['Giấy tờ do cơ quan Nhật cấp phải trong vòng 3 tháng. Giấy tờ tiếng nước ngoài phải kèm bản dịch tiếng Nhật.', 'Cục có thể yêu cầu thêm giấy tờ khác tùy trường hợp.']};
   },
   fields,

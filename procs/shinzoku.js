@@ -2,7 +2,7 @@
 (function(){
 const M = 'https://www.mofa.go.jp/';
 window.PROC = {
-  id:'shinzoku', kicker:'Visa', title:'Mời bố mẹ, người thân sang thăm (visa ngắn hạn)', jp:'短期滞在査証（親族訪問）— 招へい理由書・滞在予定表・身元保証書',
+  id:'shinzoku', short:'Visa thăm thân', jpShort:'短期滞在（親族訪問）', kicker:'Visa thăm thân', title:'Mời bố mẹ, người thân sang thăm (visa ngắn hạn)', jp:'短期滞在査証（親族訪問）— 招へい理由書・滞在予定表・身元保証書',
   intro:'Bạn ở Nhật chuẩn bị giấy mời và giấy bảo lãnh, gửi về Việt Nam; người thân nộp hồ sơ xin visa tại Việt Nam.',
   formName:'giấy tờ', defaults:{rel:'parent', who:'self'},
   forms:{},
@@ -30,7 +30,15 @@ window.PROC = {
       {jp:'親族関係を証明する書類', t:'Giấy tờ chứng minh quan hệ họ hàng với người mời (giấy khai sinh…)', warn:'Cần xác nhận loại giấy và yêu cầu dịch thuật.'},
       {jp:'—', t:'Các giấy tờ khác theo yêu cầu của Đại sứ quán (ví dụ chứng minh tài chính, công việc của người sang)', warn:'Cần xác nhận theo hướng dẫn mới nhất.'},
     ];
-    return {facts,
+    const who = {parent:'bố/mẹ', sibling:'anh chị em', other:'người thân'}[a.rel] || 'người thân';
+    const head = {title:`Mời ${who} sang Nhật chơi`, summary:`Theo câu trả lời: bạn ở Nhật mời ${who} từ Việt Nam sang ngắn hạn (tối đa 90 ngày), ${a.who === 'other' ? 'người khác ở Nhật đứng ra bảo lãnh' : 'bạn đứng ra bảo lãnh'}.`};
+    const quad = [
+      {k:'Nơi nộp', v:'Cơ quan đại diện Nhật tại Việt Nam (hoặc nơi nhận hồ sơ được chỉ định)', note:'Cần xác nhận.'},
+      {k:'Người nộp', v:`${who.charAt(0).toUpperCase() + who.slice(1)}, tại Việt Nam`},
+      {k:'Thời gian xét', v:'Cần xác nhận', note:'Theo thông báo của Đại sứ quán / Tổng lãnh sự quán.'},
+      {k:'Lệ phí', v:'Cần xác nhận'},
+    ];
+    return {head, quad, facts,
       steps:[
         {t:'Tải mẫu chính thức', d:`Trang 外務省 dành cho người Việt Nam (bản 7/4/2025): <a href="${M}mofaj/ca/fna/page23_002812.html" target="_blank" rel="noopener">ベトナム国籍の方が短期滞在を目的として日本へ渡航する場合</a>.`},
         {t:'Chuẩn bị giấy tờ phía Nhật', d:'招へい理由書, 滞在予定表, 身元保証書 và giấy tờ kèm theo.'},

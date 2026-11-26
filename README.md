@@ -7,6 +7,8 @@ Web app giúp người Việt tại Nhật làm các thủ tục thường gặp
 - Gia hạn / đổi tư cách lưu trú — 技術・人文知識・国際業務 (zairyu.html)
 - Visa gia đình 家族滞在 — 在留資格認定証明書 (kazoku.html)
 - Visa thăm thân 短期滞在（親族訪問）— hướng dẫn giấy tờ (shinzoku.html)
+- Ông bà sang chăm cháu — 特定活動（高度専門職外国人の親）hoặc 短期滞在 (mago.html)
+- Nút “Hỏi đáp” trên mọi trang: kho câu hỏi soạn sẵn có nguồn, chạy trên máy, không gửi dữ liệu (assets/faq-data.js, assets/faq.js)
 
 Phần 年末調整 gồm các tờ:
 
