@@ -12,7 +12,7 @@ const add = (o) => fields.push(o);
 const P1 = [
   {id:'nat', jpLabel:'1 国籍・地域', viLabel:'Quốc tịch', vi:'Ghi quốc tịch bằng tiếng Nhật.', q:'Quốc tịch', ph:'ベトナム', jp:true, k:[45,177,225,22], h:[56,173,220,22], out:a => a.nat || 'ベトナム'},
   {id:'birth', type:'date', jpLabel:'2 生年月日', viLabel:'Ngày sinh', vi:'Ghi theo dương lịch: năm 年, tháng 月, ngày 日.', q:'Ngày sinh', k:[273,177,280,22], h:[278,173,275,22]},
-  {id:'name', jpLabel:'3 氏名', viLabel:'Họ tên', vi:'Ghi đúng như trang thông tin của hộ chiếu, bằng chữ Latin in hoa: Family name (họ) trước, Given name (tên đệm + tên) sau.', q:'Họ tên như trên hộ chiếu (chữ in hoa)', ph:'KIEU VAN A', k:[45,203,505,30], h:[56,197,497,32]},
+  {id:'name', jpLabel:'3 氏名', viLabel:'Họ tên', vi:'Ghi đúng như trang thông tin của hộ chiếu, bằng chữ Latin in hoa: Family name (họ) trước, Given name (tên đệm + tên) sau.', q:'Họ tên như trên hộ chiếu (chữ in hoa)', ph:'NGUYEN VAN A', k:[45,203,505,30], h:[56,197,497,32]},
   {id:'sex', type:'choice', opts:[['男','Nam','○ 男'],['女','Nữ','○ 女']], jpLabel:'4 性別', viLabel:'Giới tính', vi:'Khoanh tròn 男 (nam) hoặc 女 (nữ).', q:'Giới tính', k:[45,236,235,20], h:[56,229,115,20]},
   {id:'bplace', jpLabel:'5 出生地', viLabel:'Nơi sinh', vi:'Tỉnh/thành phố nơi sinh, ví dụ 「ベトナム ハノイ」 hoặc chữ Latin như hộ chiếu.', q:'Nơi sinh', ph:'ベトナム ハノイ', h:[174,229,218,20], onlyH:true},
   {id:'married', type:'choice', opts:yesNo, jpLabel:'配偶者の有無', viLabel:'Có vợ/chồng không', vi:'Khoanh 有 nếu đã kết hôn, 無 nếu chưa.', q:'Đã kết hôn?', k:[286,236,265,20], h:[394,229,160,20]},

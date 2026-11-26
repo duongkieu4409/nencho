@@ -32,7 +32,7 @@ const fields = [
   {id:'pastCoe', jpLabel:'18 過去の在留資格認定証明書交付申請歴', viLabel:'Đã từng xin COE chưa', vi:'Chưa từng → 無.', q:'Ví dụ: 無', ph:'無', area:S(45,515,497,44), fillArea:S(260,517,282,14)},
   {id:'crime', type:'choice', opts:[['無','Không','○ 無'],['有','Có','○ 有（内容を記入）']], jpLabel:'19 犯罪を理由とする処分', viLabel:'Từng bị xử phạt hình sự', vi:'Kể cả ở nước ngoài và vi phạm giao thông.', q:'Từng bị xử phạt?', area:S(45,557,497,34), fillArea:S(148,573,350,14)},
   {id:'deport', type:'choice', opts:yn, jpLabel:'20 退去強制又は出国命令による出国の有無', viLabel:'Từng bị trục xuất', vi:'Từng bị trục xuất khỏi Nhật chưa.', q:'Từng bị trục xuất?', area:S(45,590,497,36), fillArea:S(260,592,282,14)},
-  {id:'family', type:'textarea', rows:4, jpLabel:'21 在日親族及び同居者', viLabel:'Người thân ở Nhật', vi:'Khoanh 有 và ghi gia đình bạn ở Nhật (người 高度専門職, vợ/chồng, cháu): 続柄・氏名・生年月日・国籍・同居予定・勤務先/通学先・在留カード番号.', q:'Mỗi người 1 dòng', ph:'子　KIEU VAN A　1993/4/12　ベトナム　有　〇〇株式会社　AB1234567CD\n孫　KIEU AN　2025/6/1　ベトナム　有　―　CD7654321EF', area:S(45,624,497,124), fillArea:S(48,676,494,70), out:a => (a.family || '').trim() ? '有\n' + a.family.trim() : ''},
+  {id:'family', type:'textarea', rows:4, jpLabel:'21 在日親族及び同居者', viLabel:'Người thân ở Nhật', vi:'Khoanh 有 và ghi gia đình bạn ở Nhật (người 高度専門職, vợ/chồng, cháu): 続柄・氏名・生年月日・国籍・同居予定・勤務先/通学先・在留カード番号.', q:'Mỗi người 1 dòng', ph:'子　NGUYEN VAN A　1993/4/12　ベトナム　有　〇〇株式会社　AB1234567CD\n孫　KIEU AN　2025/6/1　ベトナム　有　―　CD7654321EF', area:S(45,624,497,124), fillArea:S(48,676,494,70), out:a => (a.family || '').trim() ? '有\n' + a.family.trim() : ''},
   {id:'photo', noInput:true, optional:true, jpLabel:'写真', viLabel:'Ảnh 4×3 cm', vi:'Ảnh dọc 4 cm × ngang 3 cm theo quy cách, ghi tên mặt sau, dán vào đơn.', area:[465,41,87,113], out:() => ''},
   {id:'p34', noInput:true, badgeWarn:true, jpLabel:'申請人等作成用２～４・所属機関等作成用１～３（U）', viLabel:'Các trang còn lại của đơn', vi:'Mẫu U dùng chung cho nhiều diện, không có ô riêng cho “bố mẹ của người 高度専門職”. Cách chọn ô 22 活動内容 (trang 3) và mục 2 申請人の活動内容 (trang 6, người bảo lãnh viết) — Cần xác nhận với cục trước khi nộp (0570-013904).', area:S(45,700,497,30), out:() => ''},
   /* Tờ 確認書 */
@@ -41,7 +41,7 @@ const fields = [
     form:K, id, type:'textarea', rows:5, jpLabel:'確認書：' + jp, viLabel:vi, area, optional:false,
     vi:`Ghi 5 dòng theo thứ tự trên giấy: 氏名 (họ tên, như hộ chiếu) · 国籍・地域 · 生年月日 · 旅券番号 (không có hộ chiếu ghi 「なし」) · 本邦在留中 はい/いいえ. Phải ghi cho CẢ 4 người (bố mẹ hai bên). Người đã mất hoặc ly hôn: vẫn ghi tên và ghi rõ ở ô 備考.`,
     q:'5 dòng: họ tên / quốc tịch / ngày sinh / số hộ chiếu / はい hoặc いいえ', ph:'TRAN VAN BINH\nベトナム\n1960/3/3\nC1112223\nいいえ', note:'Nếu đang ở Nhật (はい) thì ghi thêm 在留資格, 在留期間, 在留期限 ở các dòng dưới.'})),
-  {form:K, id:'kWriter', jpLabel:'記載者の氏名・年月日', viLabel:'Người viết và ngày', vi:'Người viết tờ này (thường là bạn — người 高度専門職) ghi họ tên và ngày.', q:'Họ tên người viết', ph:'KIEU VAN A', area:[54,680,480,22], fillArea:[350,682,180,14], out:a => a.kWriter || ''},
+  {form:K, id:'kWriter', jpLabel:'記載者の氏名・年月日', viLabel:'Người viết và ngày', vi:'Người viết tờ này (thường là bạn — người 高度専門職) ghi họ tên và ngày.', q:'Họ tên người viết', ph:'NGUYEN VAN A', area:[54,680,480,22], fillArea:[350,682,180,14], out:a => a.kWriter || ''},
 ].map(f => Object.assign({form:P1, show:isT}, f, f.form === K ? {form:K, show:isT} : {}));
 
 window.PROC = {

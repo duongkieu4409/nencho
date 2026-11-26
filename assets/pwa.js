@@ -5,7 +5,9 @@
   const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
   let deferred = null;
   if (location.protocol === 'https:' || location.hostname === 'localhost'){
-    if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+    if ('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js', {updateViaCache:'none'}).then(r => r.update()).catch(() => {});
+      /* Bản mới vừa nhận quyền điều khiển trang: tải lại 1 lần để hiện ngay bản mới */
+      if (navigator.serviceWorker.controller){ let done = false; navigator.serviceWorker.addEventListener('controllerchange', () => { if (!done){ done = true; location.reload(); } }); } }
     if (isIOS && !standalone) btn.hidden = false;
   }
   addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferred = e; if (!standalone) btn.hidden = false; });
