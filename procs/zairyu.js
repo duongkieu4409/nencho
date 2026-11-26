@@ -28,7 +28,7 @@ const P1 = [
   {id:'expiry', type:'date', jpLabel:'在留期間の満了日', viLabel:'Ngày hết hạn lưu trú', vi:'Ngày hết hạn trên 在留カード (trong ngoặc sau 在留期間).', q:'Ngày hết hạn lưu trú', k:[59,377,250,24], h:[69,366,250,24],
     warn:a => { if (!a.expiry || a.kind === 'henko') return ''; const d = (new Date(a.expiry) - new Date()) / 864e5; return d > 92 ? 'Còn hơn 3 tháng mới hết hạn: thường chưa nộp được hồ sơ gia hạn (nộp từ khoảng 3 tháng trước ngày hết hạn).' : d < 0 ? 'Đã quá ngày hết hạn: hãy liên hệ ngay 出入国在留管理局.' : ''; }},
   {id:'card', jpLabel:'在留カード番号', viLabel:'Số thẻ lưu trú', vi:'12 ký tự ở góc trên bên phải 在留カード (2 chữ + 8 số + 2 chữ).', q:'Số 在留カード', ph:'AB12345678CD', k:[45,402,330,22], h:[56,390,330,22]},
-  {id:'wantStatus', jpLabel:'13 希望する在留資格', viLabel:'Tư cách lưu trú muốn đổi sang', vi:'Ghi tư cách muốn chuyển sang, ví dụ 「技術・人文知識・国際業務」.', q:'Tư cách muốn đổi sang', ph:'技術・人文知識・国際業務', jp:true, h:[56,413,497,24], onlyH:true},
+  {id:'wantStatus', jpLabel:'13 希望する在留資格', viLabel:'Tư cách lưu trú muốn đổi sang', vi:'Ghi tư cách muốn chuyển sang, ví dụ 「技術・人文知識・国際業務」 hoặc 「介護」.', q:'Tư cách muốn đổi sang', ph:'技術・人文知識・国際業務', jp:true, h:[56,413,497,24], onlyH:true},
   {id:'want', jpLabel:'希望する在留期間', viLabel:'Thời hạn mong muốn', vi:'Ghi thời hạn mong muốn, ví dụ 「3年」 hoặc 「5年」. Cục xét duyệt có thể cấp khác.', q:'Thời hạn mong muốn', ph:'3年', jp:true, k:[45,426,240,22], h:[69,437,220,22],
     note:'Phí tính theo thời hạn THỰC TẾ được cấp (từ 1/10/2026). ' + FEE},
   {id:'reason', jpLabel:'更新／変更の理由', viLabel:'Lý do gia hạn / đổi', vi:'Viết ngắn gọn bằng tiếng Nhật. Ví dụ gia hạn: 「引き続き現在の会社で勤務するため」. Ví dụ đổi từ du học: 「〇〇株式会社に就職するため」.', q:'Lý do (tiếng Nhật)', ph:'引き続き現在の会社で勤務するため', jp:true, k:[45,451,505,24], h:[56,461,497,24]},
@@ -52,7 +52,7 @@ P1.forEach(o => {
   {id:'workAddr', fillArea:[112,106,440,14], jpLabel:'17 (2)所在地 (3)電話番号', viLabel:'Địa chỉ và điện thoại nơi làm việc', vi:'Địa chỉ và số điện thoại nơi bạn làm việc chính.', q:'Địa chỉ nơi làm việc + điện thoại', ph:'大阪市中央区〇〇1-1　06-1234-5678', jp:true, area:[54,106,497,22]},
   {id:'edu', fillArea:[110,201,440,14], type:'textarea', rows:2, jpLabel:'18 最終学歴', viLabel:'Trình độ học vấn cao nhất', vi:'Đánh dấu ☑ 本邦 (học ở Nhật) hoặc 外国 (nước ngoài), loại trường (大学院・大学・短期大学・専門学校…), tên trường và ngày tốt nghiệp.', q:'Ví dụ: 外国・大学・ハノイ工科大学・2018年7月', ph:'☑外国　☑大学　ハノイ工科大学　2018年7月卒業', area:[54,127,497,95]},
   {id:'major', fillArea:[150,221,400,14], jpLabel:'19 専攻・専門分野', viLabel:'Chuyên ngành', vi:'Đánh dấu ☑ chuyên ngành đã học (ví dụ 工学, 経済学, 語学…). Nếu học 専門学校 thì chọn ở dòng dưới.', q:'Chuyên ngành', ph:'☑工学', area:[54,221,497,175]},
-  {id:'it', fillArea:[150,410,400,14], type:'choice', opts:[['無','Không','○ 無'],['有','Có','○ 有']], jpLabel:'20 情報処理技術者資格', viLabel:'Chứng chỉ IT (chỉ người làm IT)', vi:'Chỉ người làm công việc xử lý thông tin (IT) mới điền. Có chứng chỉ thì ghi tên chứng chỉ.', q:'Có chứng chỉ IT (thi IT quốc gia…) không?', area:[54,396,497,50], optional:true},
+  {id:'it', fillArea:[150,410,400,14], type:'choice', opts:[['無','Không','○ 無'],['有','Có','○ 有']], jpLabel:'20 情報処理技術者資格', viLabel:'Chứng chỉ IT (chỉ người làm IT)', vi:'Người làm 介護: chọn 無. Chỉ người làm công việc xử lý thông tin (IT) mới điền. Có chứng chỉ thì ghi tên chứng chỉ.', q:'Có chứng chỉ IT (thi IT quốc gia…) không?', area:[54,396,497,50], optional:true},
   {id:'career', fillArea:[60,478,490,72], type:'textarea', rows:3, jpLabel:'21 職歴', viLabel:'Quá trình làm việc', vi:'Ghi năm tháng vào làm (入社), nghỉ (退社) và tên công ty, kể cả ở Việt Nam.', q:'Mỗi công ty 1 dòng', ph:'2018年8月 入社 2021年3月 退社　ABC Co., Ltd.\n2021年4月 入社　〇〇株式会社', area:[54,446,497,112], optional:true},
   {id:'sign', fillArea:[300,654,250,14], type:'date', jpLabel:'署名／申請書作成年月日', viLabel:'Chữ ký và ngày làm đơn', vi:'Tự ký tên (chữ ký của bạn) và ghi ngày làm đơn. Phải tự tay ký.', q:'Ngày làm đơn', area:[54,632,497,40], out:a => (a.sign ? a.sign.replace(/-/g, '/') : '') + '　（署名）'},
 ].forEach(o => add(Object.assign({form:Z}, o)));
@@ -62,6 +62,48 @@ add({id:'photoH', form:H, area:[470,80,92,112], noInput:true, jpLabel:'写真', 
 const order = f => (f.form === Z ? 2 : 1);
 fields.sort((x, y) => order(x) - order(y));
 
+
+const ISA_KG = 'https://www.moj.go.jp/isa/applications/status/nursingcare.html';
+function kaigoGuide(a, H){
+  const me = [
+    {jp:H ? '在留資格変更許可申請書' : '在留期間更新許可申請書', t:'Đơn xin (trang người nộp + trang cơ sở)', d:'Cùng mẫu với 技人国. Trang 申請人等作成用: bạn viết. Trang 所属機関等作成用: cơ sở (施設) viết.'},
+    {jp:'写真', t:'Ảnh 4×3 cm', d:'Chụp trong 6 tháng, chính diện, nền trơn. Dán vào đơn.'},
+    {jp:'パスポート・在留カード', t:'Hộ chiếu và thẻ lưu trú', d:'Mang theo để xuất trình (提示).'},
+  ];
+  const co = [{jp:'所属機関の代表者に関する申告書', t:'Tờ khai về người đại diện cơ sở (mẫu tham khảo)', d:'Bắt buộc với hồ sơ nộp từ 15/4/2026.', where:'Cơ sở làm việc'}];
+  if (H){
+    me.push({jp:'介護福祉士登録証（写し）', t:'Bản sao thẻ đăng ký 介護福祉士', d: a.from === 'tokutei' ? 'Nếu đang 特定技能1号, sắp hết 5 năm mà chưa nhận thẻ đăng ký: nộp trước bản sao 合格通知書, có thẻ thì nộp bổ sung ngay.' : 'Đỗ kỳ thi quốc gia rồi đăng ký mới có thẻ.'});
+    if (a.jisshu === 'yes') me.push({jp:'技能移転に係る申告書', t:'Tờ khai về chuyển giao kỹ năng (mẫu tham khảo)', d:'Chỉ cần nếu đã từng ở Nhật bằng visa 技能実習.'});
+    co.unshift({jp:'労働条件通知書（雇用契約書）', t:'Giấy điều kiện lao động / hợp đồng', where:'Cơ sở làm việc'},
+      {jp:'招へい機関の概要を明らかにする文書', t:'Tài liệu giới thiệu cơ sở (lịch sử, ban lãnh đạo, tổ chức, hoạt động)', where:'Cơ sở làm việc'});
+  } else {
+    me.push({jp:'住民税の課税（又は非課税）証明書・納税証明書', t:'Giấy chứng nhận thuế cư trú (1 năm)', d:'Loại ghi tổng thu nhập và tình trạng nộp thuế; có cả hai trên 1 tờ thì 1 tờ là đủ.', where:'区役所・市役所 nơi bạn ở ngày 1/1'});
+    if (a.jobChange === 'yes') co.unshift({jp:'労働条件通知書（雇用契約書）', t:'Giấy điều kiện lao động / hợp đồng (lần gia hạn đầu sau khi chuyển việc)', where:'Cơ sở mới'},
+      {jp:'招へい機関の概要を明らかにする文書', t:'Tài liệu giới thiệu cơ sở mới', where:'Cơ sở mới'});
+  }
+  if (a.haken === 'yes') co.push({jp:'派遣先での活動内容を明らかにする資料', t:'Giấy tờ về công việc ở nơi được phái cử (労働条件通知書…)', where:'Công ty phái cử'});
+  const head = {title: H ? 'Đổi sang visa 介護' : 'Gia hạn visa 介護',
+    summary: H ? `Theo câu trả lời: đổi từ ${({tokutei:'特定技能1号', ryugaku:'留学'})[a.from] || 'diện khác'} sang 「介護」. Điều kiện: có 介護福祉士 và hợp đồng làm 介護 với cơ sở ở Nhật.` : 'Theo câu trả lời: tiếp tục làm 介護, xin thêm thời gian lưu trú (5 năm, 3 năm, 1 năm hoặc 3 tháng).'};
+  const quad = [
+    {k:'Nơi nộp', v:'地方出入国在留管理官署 nơi bạn ở, hoặc nộp online'},
+    {k:'Người nộp', v:'Bạn (hoặc nhân viên cơ sở / 行政書士 được ủy quyền)'},
+    {k:'Thời gian xét', v: H ? 'Khoảng 1–2 tháng' : 'Khoảng 2 tuần – 1 tháng', note:'Thời gian xử lý chuẩn của 入管.'},
+    {k:'Lệ phí', v:'Tính theo thời hạn được cấp: 1 năm 33.000円 · 3 năm 64.000円 · 5 năm 75.000円', note:'Từ 1/10/2026.'},
+  ];
+  const notes = [H ? 'Nộp ngay khi định làm 介護. Chưa được phép thì chưa được bắt đầu công việc theo diện mới.' : 'Nộp từ khoảng 3 tháng trước ngày hết hạn. Nộp trước hạn thì được ở tiếp đến khi có kết quả (tối đa 2 tháng sau ngày hết hạn).',
+    'Hỏi đáp: 外国人在留総合インフォメーションセンター 0570-013904 (có tiếng Việt).'];
+  const steps = [
+    {t:'Chuẩn bị giấy tờ', d:'Theo danh sách bên phải. Đưa phần “cơ sở chuẩn bị” cho văn phòng (事務所) nơi bạn làm.'},
+    {t:'Điền đơn', d:'Bấm “Bắt đầu điền giấy”: cùng mẫu với 技人国. Ô 情報処理技術者資格 chọn 無. Ô tư cách ghi 「介護」.'},
+    {t:'Nộp hồ sơ', d:'Mang hộ chiếu + 在留カード đến 入管, hoặc nộp online.'},
+    {t:'Nhận kết quả', d:'Có thông báo thì mang hộ chiếu + 在留カード đến nhận thẻ mới, nộp phí bằng 収入印紙.'},
+  ];
+  if (H && a.from === 'ryugaku') steps.unshift({t:'Kiểm tra quy định cho du học sinh', d:`入管 có hướng dẫn riêng cho du học sinh đỗ kỳ thi 介護福祉士 / tốt nghiệp trường điều dưỡng: <a href="https://www.moj.go.jp/isa/applications/resources/nyuukokukanri07_00056.html" target="_blank" rel="noopener">xem tại đây</a>.`});
+  const docs = [{t:'Giấy tờ bạn tự chuẩn bị', items:me}, {t:'Giấy tờ cơ sở làm việc chuẩn bị', d:'Theo bảng kê chính thức (チェックシート) trên trang 「介護」 của 入管.', items:co}];
+  const warns = ['Giấy tờ do cơ quan Nhật cấp phải trong vòng 3 tháng. Giấy tờ tiếng nước ngoài phải kèm bản dịch tiếng Nhật.',
+    'Đổi cơ sở làm việc: phải báo 入管 trong 14 ngày (所属機関に関する届出) — xem thủ tục “Chuyển cơ sở làm việc”.'];
+  return {head, quad, notes, steps, docs, warns, extraSources:[{t:'在留資格「介護」 (出入国在留管理庁)', u:ISA_KG}]};
+}
 window.PROC = {
   id:'zairyu', short:'Gia hạn / đổi tư cách', jpShort:'在留期間更新・在留資格変更', fillDesc:'Điền đơn 申請人等作成用１・２ từng ô rồi in ra.', kicker:'Lưu trú', title:'Gia hạn / đổi tư cách lưu trú', jp:'在留期間更新許可申請・在留資格変更許可申請（技術・人文知識・国際業務）',
   intro:'Hỏi vài câu để biết bạn cần giấy gì, nộp ở đâu, phí bao nhiêu; rồi hướng dẫn viết từng ô trên đơn chính thức.',
@@ -73,14 +115,17 @@ window.PROC = {
   },
   questions:[
     {id:'kind', type:'choice', q:'Bạn cần làm thủ tục nào?', help:'Gia hạn (更新): tiếp tục công việc hiện tại, chỉ xin thêm thời gian. Đổi tư cách (変更): chuyển sang tư cách khác, ví dụ từ 留学 (du học) sang 技術・人文知識・国際業務 khi đi làm.', opts:[['koshin','Gia hạn (更新)'],['henko','Đổi tư cách (変更)']]},
-    {id:'target', type:'choice', q:'Tư cách sau khi gia hạn/đổi là gì?', help:'App hiện hướng dẫn chi tiết cho 「技術・人文知識・国際業務」 (kỹ sư, nhân viên văn phòng, phiên dịch…). Tư cách khác dùng mẫu khác.', opts:[['gijinkoku','技術・人文知識・国際業務'],['other','Khác (特定技能, 家族滞在…)']]},
-    {id:'cat', type:'choice', q:'Công ty bạn thuộc loại (カテゴリー) nào?', help:'Hỏi phòng nhân sự. Loại 1: công ty niêm yết… Loại 2: công ty nộp thuế khấu trừ lương từ 1.000万円/năm trở lên. Loại 3: công ty khác có nộp 法定調書合計表. Loại 4: không thuộc loại nào (công ty mới…). Phần lớn công ty vừa và nhỏ là loại 3.', opts:[['1','Loại 1'],['2','Loại 2'],['3','Loại 3'],['4','Loại 4']]},
+    {id:'target', type:'choice', q:'Tư cách sau khi gia hạn/đổi là gì?', help:'App hướng dẫn chi tiết 「技術・人文知識・国際業務」 và 「介護」 — hai tư cách này dùng chung một mẫu đơn của 入管. Tư cách khác dùng mẫu khác.', opts:[['gijinkoku','技術・人文知識・国際業務'],['kaigo','介護 (điều dưỡng, có 介護福祉士)'],['other','Khác (特定技能, 家族滞在…)']]},
+    {id:'cat', type:'choice', show:a => a.target !== 'kaigo', q:'Công ty bạn thuộc loại (カテゴリー) nào?', help:'Hỏi phòng nhân sự. Loại 1: công ty niêm yết… Loại 2: công ty nộp thuế khấu trừ lương từ 1.000万円/năm trở lên. Loại 3: công ty khác có nộp 法定調書合計表. Loại 4: không thuộc loại nào (công ty mới…). Phần lớn công ty vừa và nhỏ là loại 3.', opts:[['1','Loại 1'],['2','Loại 2'],['3','Loại 3'],['4','Loại 4']]},
     {id:'jobChange', type:'choice', q:'Bạn đã chuyển việc kể từ lần xét duyệt trước?', help:'Nếu đã đổi công ty sau lần gia hạn/đổi trước, lần này cần nộp thêm giấy tờ về công ty mới (và lẽ ra đã phải báo 契約機関に関する届出 trong 14 ngày).', show:a => a.kind !== 'henko', opts:[['no','Không'],['yes','Có']]},
+    {id:'from', type:'choice', q:'Bạn đang ở diện nào trước khi đổi sang 介護?', show:a => a.target === 'kaigo' && a.kind === 'henko', opts:[['tokutei','特定技能1号'],['ryugaku','留学 (du học, trường điều dưỡng)'],['other','Khác']]},
+    {id:'jisshu', type:'choice', q:'Bạn từng ở Nhật bằng visa 技能実習 chưa?', show:a => a.target === 'kaigo' && a.kind === 'henko', opts:[['no','Chưa'],['yes','Đã từng']]},
     {id:'haken', type:'choice', q:'Bạn làm việc theo dạng phái cử (派遣) không?', opts:[['no','Không'],['yes','Có']]},
   ],
   calc:a => ({}),
   guide(a){
     const H = a.kind === 'henko', cat = +a.cat || 3, cat34 = cat >= 3;
+    if (a.target === 'kaigo') return kaigoGuide(a, H);
     if (a.target === 'other') return {stop:`App hiện chỉ hướng dẫn chi tiết tư cách 「技術・人文知識・国際業務」. Tư cách khác (特定技能, 家族滞在, 日本人の配偶者等…) dùng mẫu đơn và danh sách giấy tờ riêng — xem trang <a href="${ISA}applications/procedures/${H ? '16-2' : '16-3'}.html" target="_blank" rel="noopener">${H ? '在留資格変更許可申請' : '在留期間更新許可申請'}</a> của 出入国在留管理庁 và chọn đúng tư cách.`, facts:[], docs:[]};
     const facts = [
       {icon:'clock', k:'Khi nào nộp', v: H ? 'Trước khi bắt đầu công việc mới (khi có sự việc cần đổi).' : 'Từ khoảng 3 tháng trước ngày hết hạn (nếu thời hạn từ 6 tháng trở lên) đến ngày hết hạn.', note: H ? 'Xét duyệt chuẩn: 1–2 tháng. Chưa được phép thì chưa được làm công việc mới.' : 'Xét duyệt chuẩn: 2 tuần – 1 tháng.'},
@@ -130,6 +175,7 @@ window.PROC = {
     {t:'在留期間更新許可申請 (出入国在留管理庁)', u:ISA + 'applications/procedures/16-3.html'},
     {t:'在留資格変更許可申請 (出入国在留管理庁)', u:ISA + 'applications/procedures/16-2.html'},
     {t:'「技術・人文知識・国際業務」 — mẫu đơn và bảng kê giấy tờ', u:ISA + 'applications/status/gijinkoku.html'},
+    {t:'在留資格「介護」 — mẫu đơn và bảng kê giấy tờ', u:ISA_KG},
   ]
 };
 })();

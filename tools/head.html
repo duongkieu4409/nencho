@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F4F2EE">
+<title>{title}</title>
+<meta name="description" content="{desc}">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Thủ tục Nhật">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&family=Klee+One:wght@600&display=swap">
+<link rel="stylesheet" href="assets/app.css?v={V}">
+</head>
+<body {body}>
+<div class="wrap">
+  <header class="top">
+    {back}<a class="brand" href="./" style="color:inherit;text-decoration:none">Thủ tục ở Nhật&nbsp;<span class="brand-g">hướng dẫn</span></a>
+    <div class="top-r"><button type="button" class="pill install" id="installBtn" hidden><svg class="icon" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>Cài app</button><span class="pill-tag yr">Tiếng Việt</span>
+      <div class="acct-pop" id="installPop" hidden><b>Cài app lên iPhone/iPad</b>1. Mở trang bằng Safari. 2. Bấm nút Chia sẻ. 3. Chọn 「Thêm vào MH chính」.</div></div>
+  </header>
+  {tabs}
+  <main id="app" aria-live="polite">{main}</main>
+  <footer>Dữ liệu chỉ lưu trên máy bạn, không gửi đi đâu. App chỉ là công cụ hỗ trợ — mục “Cần xác nhận” hãy hỏi cơ quan phụ trách.<br>Mẫu giấy: 国税庁, 出入国在留管理庁, 外務省.</footer>
+</div>
+<nav class="nav" id="nav" hidden><div class="nav-in" id="navIn"></div></nav>
+{scripts}
+<script src="assets/tabs.js?v={V}"></script>
+<script src="assets/faq-data.js?v={V}"></script>
+<script src="assets/faq.js?v={V}"></script>
+<script src="assets/pwa.js?v={V}"></script>
+</body>
+</html>

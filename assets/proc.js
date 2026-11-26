@@ -42,6 +42,10 @@ let st;
 try { st = JSON.parse(localStorage.getItem(KEY)) || {}; } catch(e){ st = {}; }
 st = Object.assign({tab:'guide', idx:0, a:{}}, st); st.a = Object.assign({}, P.defaults || {}, st.a);
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(st)); } catch(e){} };
+/* Link từ trang nhóm có thể chọn sẵn câu trả lời: trang.html?set=kind:koshin,target:kaigo */
+(() => { const q = new URLSearchParams(location.search).get('set'); if (!q) return;
+  q.split(',').forEach(kv => { const [k, v] = kv.split(':'); if (k && v) st.a[k] = v; }); st.tab = 'guide'; save();
+  history.replaceState(null, '', location.pathname); })();
 const A = () => st.a;
 const calc = () => (P.calc ? P.calc(st.a) : {});
 const shown = q => !q.show || q.show(st.a, calc());
@@ -72,7 +76,7 @@ function qBlock(q){
 function modeBtns(){
   const m = st.tab === 'guide' ? 'guide' : 'fill';
   return `<div class="mode no-print" role="tablist"><button type="button" role="tab" data-tab="guide" class="${m === 'guide' ? 'on' : ''}" aria-selected="${m === 'guide'}"><span class="n">1</span><span><b>Xem hướng dẫn</b><span class="s">Cần chuẩn bị gì, nộp ở đâu, theo thứ tự nào.</span></span></button>
-    <button type="button" role="tab" data-tab="fill" class="${m === 'fill' ? 'on' : ''}" aria-selected="${m === 'fill'}" ${P.fields.length ? '' : 'disabled'}><span class="n">2</span><span><b>Nhập dữ liệu và in</b><span class="s">${esc(P.fillDesc || ('Điền ' + (P.formName || 'tờ khai') + ' từng ô rồi in ra.'))}</span></span></button></div>`;
+    <button type="button" role="tab" data-tab="fill" class="${m === 'fill' ? 'on' : ''}" aria-selected="${m === 'fill'}" ${fields().length ? '' : 'disabled'}><span class="n">2</span><span><b>Nhập dữ liệu và in</b><span class="s">${esc(P.fillDesc || ('Điền ' + (P.formName || 'tờ khai') + ' từng ô rồi in ra.'))}</span></span></button></div>`;
 }
 function shell(inner){
   if (st.tab === 'fill') return inner;

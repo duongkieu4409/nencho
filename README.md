@@ -8,6 +8,10 @@ Web app giúp người Việt tại Nhật làm các thủ tục thường gặp
 - Visa gia đình 家族滞在 — 在留資格認定証明書 (kazoku.html)
 - Visa thăm thân 短期滞在（親族訪問）— hướng dẫn giấy tờ (shinzoku.html)
 - Ông bà sang chăm cháu — 特定活動（高度専門職外国人の親）hoặc 短期滞在 (mago.html)
+- Thanh tab chính: Trang chủ · Visa · Kaigo · Thuế · Gia đình · Đời sống; mỗi nhóm có tab phụ để lọc (visa.html, kaigo.html, thue.html, giadinh.html, doisong.html)
+- Gia hạn / đổi sang visa 介護 (zairyu.html, dùng chung mẫu đơn với 技人国)
+- Luật làm thêm theo từng loại visa (fukugyo.html) · Chuyển cơ sở làm việc, báo 入管 trong 14 ngày (shozoku.html)
+- Sửa trang: sửa dữ liệu trong tools/build.py rồi chạy `python3 tools/build.py`
 - Nút “Hỏi đáp” trên mọi trang: kho câu hỏi soạn sẵn có nguồn, chạy trên máy, không gửi dữ liệu (assets/faq-data.js, assets/faq.js)
 
 Phần 年末調整 gồm các tờ:

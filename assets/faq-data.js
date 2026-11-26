@@ -9,7 +9,17 @@ window.QA_TOPICS = {
   kazoku:{name:'Visa gia đình (家族滞在)', page:'kazoku.html'},
   shinzoku:{name:'Visa thăm thân', page:'shinzoku.html'},
   mago:{name:'Ông bà sang chăm cháu', page:'mago.html'},
+  kaigo:{name:'Kaigo (介護)', page:'kaigo.html'},
+  fukugyo:{name:'Làm thêm theo visa', page:'fukugyo.html'},
+  shozoku:{name:'Chuyển cơ sở làm việc', page:'shozoku.html'},
 };
+const ISA_KG = {t:'出入国在留管理庁「在留資格『介護』」', u:'https://www.moj.go.jp/isa/applications/status/nursingcare.html'};
+const ISA_SZ = {t:'出入国在留管理庁「所属（契約）機関に関する届出」', u:'https://www.moj.go.jp/isa/applications/procedures/nyuukokukanri10_00015.html'};
+const ISA_RY = {t:'出入国在留管理庁「『留学』の資格外活動許可」', u:'https://www.moj.go.jp/isa/applications/procedures/nyuukokukanri07_00003.html'};
+const ISA_KZ = {t:'出入国在留管理庁「『家族滞在』の資格外活動許可」', u:'https://www.moj.go.jp/isa/applications/procedures/nyuukokukanri07_00004.html'};
+const ISA_SG = {t:'出入国在留管理庁「資格外活動許可について」', u:'https://www.moj.go.jp/isa/applications/procedures/nyuukokukanri07_00045.html'};
+const ISA_SSW = {t:'出入国在留管理庁「特定技能制度に関するＱ＆Ａ」', u:'https://www.moj.go.jp/isa/policies/ssw/faq.html'};
+const NTA_1900 = {t:'国税庁 No.1900「給与所得者で確定申告が必要な人」', u:'https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1900.htm'};
 const NTA8 = {t:'国税庁「令和8年分 年末調整のしかた」', u:'https://www.nta.go.jp/publication/pamph/gensen/nencho2026/01.htm'};
 const KKT8 = {t:'国税庁「令和8年分の確定申告書（案）」', u:'https://www.nta.go.jp/taxes/shiraberu/shinkoku/pdf/0026006-063.pdf'};
 const ISA_K = {t:'出入国在留管理庁「在留期間更新許可申請」', u:'https://www.moj.go.jp/isa/applications/procedures/16-3.html'};
@@ -20,6 +30,55 @@ const ISA_P = {t:'出入国在留管理庁「特定活動（高度専門職外�
 const ISA_T = {t:'出入国在留管理庁「短期滞在」', u:'https://www.moj.go.jp/isa/applications/status/temporaryvisitor.html'};
 const MOFA_VN = {t:'外務省「ベトナム国籍の方が短期滞在を目的として日本へ渡航する場合」', u:'https://www.mofa.go.jp/mofaj/ca/fna/page23_002812.html'};
 window.QA = [
+  /* ===== Kaigo ===== */
+  {topics:['zairyu'], q:'Gia hạn visa (技人国) cần giấy tờ gì?', kw:['gia han','giay gi','can giay','giay to','更新','技人国'],
+   lead:'Đơn gia hạn + ảnh; thêm giấy thuế cư trú và giấy tờ công ty tùy loại công ty.', items:[
+    ['在留期間更新許可申請書: trang người nộp bạn viết, trang 所属機関 công ty viết. Kèm 1 ảnh 4×3.','ok'],
+    ['Xuất trình hộ chiếu và 在留カード.','ok'],
+    ['Công ty loại (カテゴリー) 3–4: thêm 住民税の課税・納税証明書 và tờ khai về người đại diện công ty.','ok'],
+    ['Loại công ty và danh sách đầy đủ: hỏi phòng nhân sự, hoặc trả lời câu hỏi trong app.','ok']], src:[ISA_K], go:'zairyu.html'},
+  {topics:['kaigo','zairyu'], q:'Gia hạn visa 介護 cần giấy tờ gì?', kw:['gia han kaigo','gia han 介護','gia han','giay gi','can giay','介護 gia han','更新 介護','visa kaigo','visa 介護','giay to kaigo'],
+   lead:'Đơn gia hạn + ảnh + giấy thuế cư trú + tờ khai về người đại diện cơ sở.', items:[
+    ['在留期間更新許可申請書 (cùng mẫu với 技人国) và 1 ảnh 4×3.','ok'],
+    ['住民税の課税（非課税）証明書 và 納税証明書 (1 năm), lấy ở 区役所 nơi bạn ở ngày 1/1.','ok'],
+    ['所属機関の代表者に関する申告書: bắt buộc với hồ sơ nộp từ 15/4/2026.','ok'],
+    ['Lần gia hạn đầu sau khi chuyển việc: thêm giấy điều kiện lao động và tài liệu giới thiệu cơ sở mới.','ok']], src:[ISA_KG], go:'zairyu.html?set=kind:koshin,target:kaigo'},
+  {topics:['kaigo','zairyu'], q:'Đổi từ 特定技能 sang visa 介護 thế nào?', kw:['doi sang kaigo','doi sang 介護','sang kaigo','sang 介護','sang visa kaigo','特定技能 sang','tokutei sang','介護福祉士','dau kaigo','do kaigo','tot nghiep truong dieu duong'],
+   lead:'Đỗ 介護福祉士 rồi xin 在留資格変更許可 sang 「介護」.', items:[
+    ['Điều kiện: có 介護福祉士 và hợp đồng làm 介護 với cơ sở ở Nhật (đỗ theo con đường nào cũng được).','ok'],
+    ['Nộp: đơn đổi tư cách, ảnh, bản sao thẻ đăng ký 介護福祉士, giấy điều kiện lao động, tài liệu về cơ sở.','ok'],
+    ['特定技能1号 sắp hết 5 năm mà chưa có thẻ đăng ký: nộp trước bản sao 合格通知書.','ok'],
+    ['Từng ở Nhật bằng 技能実習: thêm 技能移転に係る申告書.','ok']], src:[ISA_KG], go:'zairyu.html?set=kind:henko,target:kaigo'},
+  {topics:['kaigo','fukugyo'], q:'Visa 介護 có được làm thêm ở cơ sở khác không?', kw:['lam them','co so khac','2 noi','hai noi','副業','arubaito','baito','part time'],
+   lead:'Làm 介護 ở nơi khác: hỏi 入管 trước. Việc khác loại: phải xin phép.', items:[
+    ['Tư cách 「介護」 là làm 介護 theo hợp đồng với cơ sở ở Nhật.','ok'],
+    ['Ký hợp đồng thứ 2 làm 介護: có cần xin phép / báo 入管 không thì hỏi 0570-013904 trước.','cx'],
+    ['Việc ngoài 介護 (cửa hàng, nhà hàng…): phải có 資格外活動許可 trước khi làm.','ok'],
+    ['Lương nơi phụ trên 20万円/năm: phải làm 確定申告.','ok']], src:[ISA_KG, ISA_SG, NTA_1900], go:'fukugyo.html'},
+  {topics:['fukugyo','kaigo'], q:'特定技能 có được làm thêm không?', kw:['特定技能','tokutei','dac dinh','tokutei lam them','特定技能 lam them','lam them'],
+   lead:'Không. 特定技能 không được làm thêm ở công ty khác.', items:[
+    ['Q&A của 入管: làm thêm ở công ty khác — không được.','ok'],
+    ['特定技能 phải làm toàn thời gian cho 1 nơi tiếp nhận.','ok'],
+    ['資格外活動許可 không áp dụng cho 特定技能.','ok'],
+    ['Muốn đổi nơi làm: phải xin 在留資格変更許可 trước.','ok']], src:[ISA_SSW, ISA_SG], go:'fukugyo.html'},
+  {topics:['fukugyo'], q:'Du học sinh được làm thêm bao nhiêu giờ?', kw:['du hoc','留学','28','bao nhieu gio','gio lam','ryugaku'],
+   lead:'Tối đa 28 giờ/tuần; kỳ nghỉ dài của trường: 8 giờ/ngày.', items:[
+    ['Phải có 資格外活動許可 (包括許可) trước khi làm.','ok'],
+    ['Đếm từ ngày nào trong tuần cũng không được vượt 28 giờ; cộng tất cả nơi làm.','ok'],
+    ['Không làm ở cơ sở 風俗営業.','ok'],
+    ['Tốt nghiệp xong (không còn là học sinh) thì không được làm thêm.','ok']], src:[ISA_RY], go:'fukugyo.html'},
+  {topics:['fukugyo','kazoku'], q:'Visa 家族滞在 được làm thêm bao nhiêu giờ?', kw:['家族滞在','kazoku','vo lam them','gia dinh lam them','28'],
+   lead:'Tối đa 28 giờ/tuần, phải có 資格外活動許可.', items:[
+    ['28 giờ là tổng của tất cả nơi làm.','ok'],
+    ['Không có ngoại lệ 8 giờ/ngày như du học sinh.','ok'],
+    ['Từ 1/10/2026: làm ở tiệm pachinko… cần giấy phép riêng (個別許可).','ok'],
+    ['Làm quá giờ có thể bị từ chối khi gia hạn.','ok']], src:[ISA_KZ], go:'fukugyo.html'},
+  {topics:['shozoku','kaigo'], q:'Chuyển việc phải báo 入管 không?', kw:['chuyen viec','chuyen co so','nghi viec','doi cong ty','届出','14 ngay','14日','所属機関','bao nyukan'],
+   lead:'Có. Tự báo 入管 trong 14 ngày (所属機関に関する届出).', items:[
+    ['Áp dụng khi nghỉ việc, vào nơi mới, hoặc nơi làm đổi tên / địa chỉ / giải thể.','ok'],
+    ['Nộp online, tại quầy hoặc gửi bưu điện; không cần giấy tờ chứng minh.','ok'],
+    ['Không báo có thể bị phạt đến 20万円.','ok'],
+    ['特定技能 đổi nơi làm: phải xin 在留資格変更許可, không chỉ báo.','ok']], src:[ISA_SZ, ISA_SSW], go:'shozoku.html'},
   /* ===== Ông bà sang chăm cháu ===== */
   {topics:['mago','shinzoku'], q:'Bố mẹ sang chăm cháu được bao lâu?', kw:['cham chau','bao lau','o bao lau','sang cham','ong ba','bo me sang','trong chau','giu chau'],
    lead:'Thông thường chỉ sang được bằng visa ngắn hạn, tối đa 90 ngày mỗi lần.', items:[

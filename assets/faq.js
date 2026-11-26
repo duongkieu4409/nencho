@@ -11,14 +11,14 @@ const words = s => norm(s).split(' ').filter(w => w.length >= 2);
 
 /* Tìm câu gần nhất. Đổi sang AI sau này: thay hàm này bằng lời gọi API, giữ nguyên định dạng trả về. */
 /* Câu hỏi nhắc tên thủ tục nào thì ưu tiên thủ tục đó */
-const NAMED = {nenmatsu:['年末調整','nenmatsu','quyet toan cuoi nam','dieu chinh thue cuoi nam'], kakutei:['確定申告','kakutei','tu khai thue'], zairyu:['更新','変更','gia han','doi tu cach'], kazoku:['家族滞在','visa gia dinh','don vo','don chong','vo sang','chong sang','con sang'], shinzoku:['親族訪問','tham than','sang choi','du lich','招へい'], mago:['cham chau','ong ba','特定活動']};
+const NAMED = {kaigo:['介護','kaigo','dieu duong'], nenmatsu:['年末調整','nenmatsu','quyet toan cuoi nam','dieu chinh thue cuoi nam'], kakutei:['確定申告','kakutei','tu khai thue'], zairyu:['更新','変更','gia han','doi tu cach'], kazoku:['家族滞在','visa gia dinh','don vo','don chong','vo sang','chong sang','con sang'], shinzoku:['親族訪問','tham than','sang choi','du lich','招へい'], mago:['cham chau','ong ba','特定活動'], shozoku:['chuyen viec','chuyen co so','nghi viec','所属機関'], fukugyo:['lam them','副業','資格外','arubaito','baito']};
 function QA_ANSWER(text, tp){
   const n = ' ' + norm(text) + ' ', ws = new Set(words(text));
-  for (const [k, list] of Object.entries(NAMED)) if (list.some(x => n.includes(norm(x)))){ tp = k; break; }
+  for (const [k, list] of Object.entries(NAMED)) if (list.some(x => { const xn = norm(x); return n.includes(/^[a-z0-9 ]+$/.test(xn) ? ' ' + xn + ' ' : xn); })){ tp = k; break; }
   let best = null, bs = 0;
   for (const e of DATA){
     let s = 0;
-    for (const k of e.kw){ const kn = norm(k); if (kn && n.includes(kn)) s += 2 + Math.min(kn.length, 12) / 6; }
+    for (const k of e.kw){ const kn = norm(k); if (kn && n.includes(/^[a-z0-9 ]+$/.test(kn) ? ' ' + kn + ' ' : kn)) s += 2 + Math.min(kn.length, 12) / 6; }
     for (const w of words(e.q)) if (w.length >= 3 && ws.has(w)) s += .6;
     if (s > 0 && e.topics.includes(tp)) s += 2;
     if (s > bs){ bs = s; best = e; }
