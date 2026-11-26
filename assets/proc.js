@@ -153,12 +153,12 @@ function zoomBy(k){ const v = $('#fview'); if (!v) return; const W = +v.querySel
 addEventListener('resize', () => { if (st.tab === 'fill') applyZoom(); const lb = $('#lb'); if (lb && lb._draw) lb._draw(); });
 
 /* ---------- 2. Nhập dữ liệu (mỗi màn một ô) ---------- */
-function paper(text){
+function paper(text, ph){
   const rows = String(text ?? '').split('\n').filter(x => x !== '').map(l => {
     const m = l.match(/^(.{1,24}?)[　]+(.+)$/);
     return m ? `<div class="row"><span>${esc(m[1])}</span><b>${esc(m[2])}</b></div>` : `<div class="row only"><b>${esc(l)}</b></div>`;
   }).join('');
-  return `<div class="lab2">Phần bạn điền vào giấy</div><div class="write">${rows || '<div class="row only"><b class="muted">（chưa nhập）</b></div>'}</div>`;
+  return `<div class="lab2">Phần bạn điền vào giấy</div><div class="write">${rows || (ph ? `<div class="row only sample no-print"><b>Ví dụ: ${esc(String(ph).split('\n')[0])}</b></div>` : '<div class="row only"><b class="muted">（chưa nhập）</b></div>')}</div>`;
 }
 const outText = (fd, a, c) => fd.out ? fd.out(a, c) : (fd.type === 'date' ? ymd(a[fd.id]) : fd.type === 'money' ? (a[fd.id] !== undefined && a[fd.id] !== '' ? comma(num(a[fd.id])) : '') : (fd.type === 'choice' ? ((fd.opts.find(o => o[0] === a[fd.id]) || [])[2] || (fd.opts.find(o => o[0] === a[fd.id]) || [])[1] || '') : (a[fd.id] || '')));
 function renderFill(){
@@ -180,7 +180,7 @@ function renderFill(){
       <div class="st"><span class="n">${st.idx + 1}</span><span class="tt">${esc(fd.jpLabel)}<small>${esc(fd.viLabel)}</small></span></div>
       <p class="vi">${fd.vi}</p>`;
   if (fd.jp || fd.badgeWarn) h += `<div class="badges">${fd.jp ? '<span class="b-jp">文 Viết bằng tiếng Nhật</span>' : ''}${fd.badgeWarn ? `<span class="b-opt">${icon('alert', 14)} Cần xác nhận</span>` : ''}</div>`;
-  h += `<div id="paperBox">${paper(outText(fd, a, c))}</div>`;
+  h += `<div id="paperBox">${paper(outText(fd, a, c), fd.ph)}</div>`;
   if (!fd.noInput) h += `<div class="field inbox no-print"><div class="lab2">Ô nhập của bạn</div><label class="sub-label" for="in-${fd.id}" style="margin-top:0">${esc(fd.q || 'Nhập thông tin của bạn')}</label>${control(fd)}${fd.hint ? `<p class="hint">${esc(fd.hint)}</p>` : ''}</div>`;
   const warn = typeof fd.warn === 'function' ? fd.warn(a, c) : fd.warn;
   const note = typeof fd.note === 'function' ? fd.note(a, c) : fd.note;
@@ -197,7 +197,7 @@ function renderFill(){
 function refreshPaper(){
   if (st.tab !== 'fill') return;
   const F = fields(), fd = F[st.idx]; if (!fd) return;
-  const box = $('#paperBox'); if (box) box.innerHTML = paper(outText(fd, st.a, calc()));
+  const box = $('#paperBox'); if (box) box.innerHTML = paper(outText(fd, st.a, calc()), fd.ph);
 }
 
 /* ---------- 3. Tổng quan & in ---------- */

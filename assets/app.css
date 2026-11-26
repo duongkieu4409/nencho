@@ -498,3 +498,4 @@ b,strong{font-weight:600}
 @keyframes hlp{50%{fill:rgba(224,90,43,.30)}}
 .mark{fill:rgba(224,90,43,.16);stroke:#E05A2B}.markn{fill:#E05A2B}
 .lb-how li i{color:#0E0F13}
+.write .sample b{color:var(--ink-3);font-style:italic;opacity:.85}
