@@ -385,3 +385,32 @@ body.has-nav .qa-fab{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
 .also{margin-top:22px;padding:14px 16px;border-radius:16px;background:var(--sunken);font-size:14.5px}
 .soon{padding:40px 20px;text-align:center;border-radius:20px;background:var(--surface);box-shadow:0 0 0 1px var(--line)}
 @media(max-width:600px){.ghead h1{font-size:22px}.sub{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}.sub button{flex:none}.mt a{padding:6px 12px 6px 6px}}
+
+/* ===== Giao diện đen (mặc định cho mọi máy) — nhấn vàng hổ phách, không dùng tím ===== */
+:root:not(#_){
+  color-scheme:dark;
+  --bg:#0E0F13; --surface:#1A1C22; --sunken:#23262E; --ink:#F2F0EA; --ink-2:#D2CEC5; --ink-3:#ABA79E;
+  --line:rgba(242,240,234,.13); --line-2:rgba(242,240,234,.24);
+  --primary:#FFC857; --primary-ink:#111111; --primary-soft:rgba(255,200,87,.15); --primary-line:rgba(255,200,87,.55);
+  --ok:#5BE38F; --ok-soft:rgba(91,227,143,.14); --warn:#FFA552; --warn-soft:rgba(255,165,82,.14); --danger:#FF8080; --danger-soft:rgba(255,128,128,.14);
+  --pen:#FFE3A3; --paper:#202329; --paper-line:#30343D; --paper-ink:#BDB7A8; --mark:#FFC857; --viewer:#121318;
+  --grad:linear-gradient(#FFC857,#FFC857);
+  --sh-1:0 0 0 0 transparent; --sh-2:0 24px 50px -30px rgba(0,0,0,.85);
+}
+html,body{background:var(--bg);color:var(--ink)}
+.card,.pcard{box-shadow:0 0 0 1px var(--line),0 24px 50px -36px rgba(0,0,0,.8)}
+.btn-pri,.install,.qa-btn,.qa-in button,.qa-m.me,.sub button.on,.tab.on,.help-btn[aria-expanded="true"]{background:var(--primary)!important;color:#111!important;box-shadow:none}
+.mt a.on{background:var(--primary);color:#111}.mt a.on i{background:#111;color:var(--primary)}
+.qa-av,.mode .n,.brand .logo{background:var(--primary);color:#111}
+.pcard .jp,.jp-accent{color:var(--primary)}
+.tg.f{background:var(--ok-soft);color:var(--ok)}.tg.s{background:var(--primary-soft);color:var(--primary)}
+/* ô tô sáng trên ảnh giấy trắng: vàng đậm để thấy rõ */
+.hl{fill:rgba(255,190,40,.30);stroke:#E39500;stroke-width:2.6}
+@media print{
+  :root:not(#_){color-scheme:light;--bg:#fff;--surface:#fff;--sunken:#f2f2f2;--ink:#000;--ink-2:#333;--ink-3:#555;--line:#ccc;--line-2:#999;--primary:#000;--primary-soft:#eee;--pen:#1F4FD6;--paper:#fff;--paper-line:#ddd;--ok:#0A6B3C;--warn:#9A4A00;--danger:#A00}
+  html,body{background:#fff!important;color:#000!important}
+  .hl{display:none}
+}
+@keyframes hlp{50%{fill:rgba(255,190,40,.48)}}
+a:not([class]),a:not([class]):visited,.qa-src a,.qa-src a:visited{color:var(--primary)}
+@media print{a:not([class]){color:#000}}
