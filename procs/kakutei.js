@@ -121,7 +121,7 @@ window.PROC = {
       {t:'Nhận tiền hoàn / nộp thêm', d:'Tiền hoàn chuyển vào tài khoản đứng tên bạn. Phải nộp thêm thì nộp trước 15/3/2027.'},
     ];
     const items = [
-      {jp:'源泉徴収票', t:'Phiếu khấu trừ thuế năm 2026 của TẤT CẢ nơi trả lương', where:'Công ty phát (nghỉ việc: công ty phải gửi trong 1 tháng sau khi nghỉ)'},
+      {jp:'源泉徴収票', t:'Phiếu khấu trừ thuế năm 2026 của tất cả nơi trả lương', where:'Công ty phát (nghỉ việc: công ty phải gửi trong 1 tháng sau khi nghỉ)'},
       {jp:'マイナンバーカード（又は通知カード＋本人確認書類）', t:'Thẻ My Number (hoặc giấy thông báo số + 在留カード)', d:'Để ghi số và xác nhận danh tính.'},
       {jp:'還付金の振込口座', t:'Thông tin tài khoản ngân hàng đứng tên bạn (nếu được hoàn)'},
     ];

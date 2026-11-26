@@ -34,12 +34,14 @@ G = {
 FILE = {'visa':'visa.html','kaigo':'kaigo.html','thue':'thue.html','giadinh':'giadinh.html','doisong':'doisong.html'}
 PAGES = {'kakutei':'Tự khai thuế 確定申告 2026','zairyu':'Gia hạn / đổi tư cách lưu trú','kazoku':'Visa gia đình 家族滞在','shinzoku':'Visa thăm thân','mago':'Ông bà sang chăm cháu','fukugyo':'Luật làm thêm với từng loại visa','shozoku':'Chuyển cơ sở làm việc'}
 
+# Nhóm chính của từng trang (tô khi mở thẳng trang, không đi qua trang nhóm)
+MAIN = {'kakutei':'thue','nenmatsu':'thue','zairyu':'visa','shinzoku':'visa','kazoku':'giadinh','mago':'giadinh','fukugyo':'visa','shozoku':'visa'}
 def groups_of(href):
     base = href.split('?')[0]
     return [g for g, d in G.items() if any(P[k][0].split('?')[0] == base for _, ks in d[4] for k in ks)]
 
 def tabbar():
-    t = '<a href="./" data-g="home"><i>★</i>Trang chủ</a>' + ''.join(f'<a href="{FILE[g]}" data-g="{g}"><i>{d[0]}</i>{d[1]}</a>' for g, d in G.items())
+    t = '<a href="./" data-g="home"><i><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9.5 21v-6h5v6"/></svg></i>Trang chủ</a>' + ''.join(f'<a href="{FILE[g]}" data-g="{g}"><i>{d[0]}</i>{d[1]}</a>' for g, d in G.items())
     return f'<nav class="mt no-print" aria-label="Nhóm thủ tục">{t}</nav>'
 
 def card(k, subs='', label=''):
@@ -55,7 +57,7 @@ def page(name, title, desc, main, scripts, body):
 home_keys = ['nenmatsu','kakutei','zairyu','shinzoku','kazoku','mago','fukugyo','shozoku']
 grid = ''.join(card(k) for k in home_keys)
 page('index.html', 'Thủ tục ở Nhật — hướng dẫn cho người Việt', 'Hướng dẫn người Việt tại Nhật: thuế, visa, kaigo, gia đình.',
-     f'<section class="card"><span class="pill-tag">Chọn thủ tục</span><h1>Bạn cần làm <span class="g">thủ tục gì</span>?</h1><p class="lead">Chọn nhóm ở thanh trên, hoặc chọn thủ tục bên dưới. Mỗi thủ tục có phần hướng dẫn, nhiều thủ tục có thêm phần điền giấy rồi in.</p></section><div class="pgrid">{grid}</div>',
+     f'<section class="card"><h1>Bạn cần làm <span class="g">thủ tục gì</span>?</h1><p class="lead">Chọn nhóm ở thanh trên, hoặc chọn thủ tục bên dưới. Mỗi thủ tục có phần hướng dẫn, nhiều thủ tục có thêm phần điền giấy rồi in.</p></section><div class="pgrid">{grid}</div>',
      '<script>window.QA_TOPIC="general"</script>', 'class="home-page" data-g="home"')
 
 # Trang nhóm
@@ -78,7 +80,7 @@ for g, (ic, nm, title, desc, subs) in G.items():
 
 # Trang thủ tục
 for k, t in PAGES.items():
-    ins = ' '.join(groups_of(k + '.html'))
+    gs = groups_of(k + '.html'); gs.sort(key=lambda g: g != MAIN.get(k)); ins = ' '.join(gs)
     page(k + '.html', t + ' — Thủ tục ở Nhật', t, '', f'<script src="procs/{k}.js?v={V}"></script>\n<script src="assets/proc.js?v={V}"></script>', f'class="proc-page" data-p="{k}" data-in="{ins}"')
 
 # nenmatsu.html: chèn / cập nhật thanh tab + CSS + script
@@ -88,7 +90,7 @@ s = re.sub(r'\n/\* Tab chính / tab phụ \*/.*?(?=</style>)', '', s, count=1, f
 s = s.replace('</style>', '\n' + tcss + '\n</style>', 1)
 s = re.sub(r'<nav class="mt no-print".*?</nav>\n?', '', s, flags=re.S)
 s = s.replace('</header>', '</header>\n' + tabbar() + '\n', 1)
-s = re.sub(r'<body([^>]*)>', lambda m: m.group(0) if 'data-p=' in m.group(0) else f'<body{m.group(1)} data-p="nenmatsu" data-in="{" ".join(groups_of("nenmatsu.html"))}">', s, count=1)
+s = re.sub(r'<body([^>]*)>', lambda m: m.group(0) if 'data-p=' in m.group(0) else f'<body{m.group(1)} data-p="nenmatsu" data-in="{" ".join(sorted(groups_of("nenmatsu.html"), key=lambda g: g != MAIN["nenmatsu"]))}">', s, count=1)
 s = re.sub(r'\?v=\d+', f'?v={V}', s)
 if 'assets/tabs.js' not in s: s = s.replace('<script src="assets/faq.js', f'<script src="assets/tabs.js?v={V}"></script>\n<script src="assets/faq.js', 1)
 open('nenmatsu.html', 'w').write(s)

@@ -1,5 +1,5 @@
 /* Service worker: lưu app vào máy để mở được khi không có mạng. Đổi VERSION mỗi lần cập nhật app. */
-const VERSION = 'nencho-v8';
+const VERSION = 'nencho-v10';
 const CORE = ['./', './index.html', './nenmatsu.html', './kakutei.html', './zairyu.html', './kazoku.html', './shinzoku.html', './mago.html', './visa.html', './kaigo.html', './thue.html', './giadinh.html', './doisong.html', './fukugyo.html', './shozoku.html', './procs/fukugyo.js', './procs/shozoku.js', './assets/tabs.js', './procs/mago.js', './assets/faq.js', './assets/faq-data.js', './forms/mago-1.jpg', './forms/mago-k.jpg', './assets/app.css', './assets/proc.js', './assets/pwa.js', './procs/kakutei.js', './procs/zairyu.js', './procs/kazoku.js', './procs/shinzoku.js', './forms/kakutei-1.jpg', './forms/koshin-1.jpg', './forms/henko-1.jpg', './forms/zairyu-2.jpg', './forms/kazoku-1.jpg', './forms/kazoku-2.jpg', './forms/kazoku-3.jpg', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png', './icons/apple-touch-icon.png', './icons/favicon-32.png'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(VERSION).then(c => c.addAll(CORE)).then(() => self.skipWaiting()));

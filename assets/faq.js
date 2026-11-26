@@ -44,6 +44,9 @@ fab.className = 'qa-fab no-print';
 document.body.appendChild(fab);
 function drawFab(){ fab.innerHTML = `<span class="qa-bub">Hỏi về ${esc(topic === 'general' ? 'thủ tục' : (T[topic] || T.general).name)}?</span><button type="button" class="qa-btn" aria-label="Mở hỏi đáp"><i>?</i><span>Hỏi đáp</span></button>`; }
 drawFab();
+/* Bong bóng gợi ý: chỉ hiện ~4 giây, lần đầu mỗi phiên, để không che nội dung */
+(() => { let seen = false; try { seen = !!sessionStorage.getItem('qaBub'); sessionStorage.setItem('qaBub', '1'); } catch(e){}
+  if (seen) fab.classList.add('nb'); else setTimeout(() => fab.classList.add('nb'), 4000); })();
 
 let panel = null;
 function suggestions(){

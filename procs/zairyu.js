@@ -30,7 +30,7 @@ const P1 = [
   {id:'card', jpLabel:'在留カード番号', viLabel:'Số thẻ lưu trú', vi:'12 ký tự ở góc trên bên phải 在留カード (2 chữ + 8 số + 2 chữ).', q:'Số 在留カード', ph:'AB12345678CD', k:[45,402,330,22], h:[56,390,330,22]},
   {id:'wantStatus', jpLabel:'13 希望する在留資格', viLabel:'Tư cách lưu trú muốn đổi sang', vi:'Ghi tư cách muốn chuyển sang, ví dụ 「技術・人文知識・国際業務」 hoặc 「介護」.', q:'Tư cách muốn đổi sang', ph:'技術・人文知識・国際業務', jp:true, h:[56,413,497,24], onlyH:true},
   {id:'want', jpLabel:'希望する在留期間', viLabel:'Thời hạn mong muốn', vi:'Ghi thời hạn mong muốn, ví dụ 「3年」 hoặc 「5年」. Cục xét duyệt có thể cấp khác.', q:'Thời hạn mong muốn', ph:'3年', jp:true, k:[45,426,240,22], h:[69,437,220,22],
-    note:'Phí tính theo thời hạn THỰC TẾ được cấp (từ 1/10/2026). ' + FEE},
+    note:'Phí tính theo thời hạn thực tế được cấp (từ 1/10/2026). ' + FEE},
   {id:'reason', jpLabel:'更新／変更の理由', viLabel:'Lý do gia hạn / đổi', vi:'Viết ngắn gọn bằng tiếng Nhật. Ví dụ gia hạn: 「引き続き現在の会社で勤務するため」. Ví dụ đổi từ du học: 「〇〇株式会社に就職するため」.', q:'Lý do (tiếng Nhật)', ph:'引き続き現在の会社で勤務するため', jp:true, k:[45,451,505,24], h:[56,461,497,24]},
   {id:'crime', type:'choice', opts:[['無','Không','○ 無'],['有','Có','○ 有（内容を記入）']], jpLabel:'15 犯罪を理由とする処分', viLabel:'Từng bị xử phạt hình sự', vi:'Kể cả ở nước ngoài và vi phạm giao thông (bị phạt tiền/罰金…). Nếu có, ghi nội dung trong ngoặc.', q:'Đã từng bị xử phạt (kể cả vi phạm giao thông)?', k:[45,475,505,46], h:[56,484,497,46],
     warn:a => a.crime === '有' ? 'Có tiền án/xử phạt: phải ghi trung thực. Khai sai có thể bị bất lợi. Nên hỏi 行政書士 hoặc 外国人在留総合インフォメーションセンター (0570-013904).' : ''},
